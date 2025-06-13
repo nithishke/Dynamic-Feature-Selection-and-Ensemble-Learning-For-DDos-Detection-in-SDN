@@ -21,7 +21,7 @@ Install dependencies:
 ```bash
 pip install scikit-learn flask pandas numpy
 
-
+```
 📥 Setup Steps
 Download the Project
 
@@ -31,16 +31,14 @@ Extract the ZIP file to your desired folder.
 
 Download the Dataset
 
-📁 Download from Google Drive (replace this with your dataset link)
+📁 [Download from Google Drive](https://drive.google.com/drive/folders/1KLoVqwKwvmXRDjUHAqiJRjzMYRkKNDa9?usp=sharing)
 
 Place the dataset in the root folder of the project.
 
-Train the ML Models
-
-bash
-Copy
-Edit
+Train the ML Models by using the below Command
+```bash
 python train_model.py
+```
 This will:
 
 Perform dynamic feature selection
@@ -50,11 +48,9 @@ Apply PCA
 Train and save the ensemble classifiers
 
 Run the Web App
-
-bash
-Copy
-Edit
+```bash
 python app.py
+```
 The app will start on http://localhost:5000/.
 
 🧠 Model Details
@@ -73,7 +69,7 @@ Passive-Aggressive Classifier
 Stacking Classifier
 
 🧪 Dataset
-CICDDoS2019 and other real-world SDN attack datasets
+[CICDDoS2019](https://drive.google.com/drive/folders/1KLoVqwKwvmXRDjUHAqiJRjzMYRkKNDa9?usp=sharing) and other real-world SDN attack datasets
 
 Includes simulated DDoS flows for training
 
@@ -81,5 +77,5 @@ Includes simulated DDoS flows for training
 Nithish Kumar K E
 Passionate about Cybersecurity | Machine Learning | SDN
 
-LinkedIn Profile : https://www.linkedin.com/in/nithish-kumar-k-e/
+[LinkedIn Profile](https://www.linkedin.com/in/nithish-kumar-k-e/)
 
