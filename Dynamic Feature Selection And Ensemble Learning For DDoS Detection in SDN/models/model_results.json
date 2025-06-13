@@ -1,0 +1,22 @@
+{
+  "mlp": {
+    "model_path": "models/mlp_model.pkl",
+    "n_features": 15,
+    "n_components": 10
+  },
+  "passive_aggressive": {
+    "model_path": "models/passive_aggressive_model.pkl",
+    "n_features": 15,
+    "n_components": 10
+  },
+  "naive_bayes": {
+    "model_path": "models/naive_bayes_model.pkl",
+    "n_features": 15,
+    "n_components": 10
+  },
+  "stacking": {
+    "model_path": "models/stacking_model.pkl",
+    "n_features": 15,
+    "n_components": 10
+  }
+}

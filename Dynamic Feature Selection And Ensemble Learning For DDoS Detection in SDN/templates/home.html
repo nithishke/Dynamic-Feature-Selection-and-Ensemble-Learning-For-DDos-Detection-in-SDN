@@ -1,0 +1,122 @@
+<!-- templates/home.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Network IDS - Home</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <!-- Header -->
+    <header class="bg-dark text-white py-3">
+        <div class="container">
+            <div class="d-flex justify-content-between align-items-center">
+                <h1 class="m-0">Network IDS</h1>
+                <nav>
+                    <ul class="nav">
+                        <li class="nav-item"><a href="/" class="nav-link text-white">Home</a></li>
+                        <li class="nav-item"><a href="/notebook" class="nav-link text-white">Notebook</a></li>
+                        <li class="nav-item"><a href="/about" class="nav-link text-white">About</a></li>
+                        <li class="nav-item"><a href="/logout" class="nav-link text-white">Sign Out</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="py-5 container">
+        <h2 class="text-center mb-4">Welcome to Your Network Intrusion Detection Dashboard</h2>
+        
+        <div class="row">
+            <div class="col-md-6 mx-auto">
+                <div class="card">
+                    <div class="card-header bg-primary text-white">
+                        <h3 class="card-title mb-0">Quick Actions</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-grid gap-3">
+                            <a href="/notebook" class="btn btn-outline-primary">Go to Analysis Notebook</a>
+                            <button class="btn btn-outline-info" data-bs-toggle="modal" data-bs-target="#howToModal">How to Use</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-5">
+            <div class="col-md-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h4>Network Protection</h4>
+                        <p>Our system helps you detect and prevent DDoS attacks by analyzing network traffic patterns in real-time.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h4>ML-Powered Detection</h4>
+                        <p>Leveraging advanced machine learning algorithms to identify potential threats with high accuracy.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h4>Easy Analysis</h4>
+                        <p>Use our intuitive interface to analyze network traffic data and get instant results.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-4">
+        <div class="container text-center">
+            <p>&copy; 2025 Network Intrusion Detection System</p>
+        </div>
+    </footer>
+
+    <!-- How To Modal -->
+    <div class="modal fade" id="howToModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">How to Use the System</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <h5>Using the Notebook</h5>
+                    <p>The Notebook page allows you to input network traffic data for analysis:</p>
+                    <ol>
+                        <li>Navigate to the Notebook page</li>
+                        <li>Fill in the required network traffic parameters</li>
+                        <li>Click "Predict" to analyze the traffic</li>
+                        <li>View results showing whether the traffic is normal or potentially malicious</li>
+                    </ol>
+                    
+                    <h5>Understanding the Parameters</h5>
+                    <ul>
+                        <li><strong>Service</strong>: Type of network service (e.g., http, ftp)</li>
+                        <li><strong>Flag</strong>: TCP flag</li>
+                        <li><strong>Src-Bytes</strong>: Bytes sent from source to destination</li>
+                        <li><strong>Dst-Bytes</strong>: Bytes sent from destination to source</li>
+                        <li><strong>Count</strong>: Number of connections to the same destination in the past 2 seconds</li>
+                        <li><strong>Other parameters</strong>: Various metrics related to connection patterns</li>
+                    </ul>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Got it!</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>

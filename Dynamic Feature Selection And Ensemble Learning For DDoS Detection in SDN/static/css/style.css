@@ -1,0 +1,106 @@
+/* static/css/style.css */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    background-color: #f8f9fa;
+}
+
+.hero-section {
+    background: linear-gradient(135deg, #0d6efd 0%, #0dcaf0 100%);
+    color: white;
+    padding: 60px 0;
+    margin-bottom: 30px;
+}
+
+.card {
+    border: none;
+    border-radius: 10px;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.card-header {
+    border-radius: 10px 10px 0 0 !important;
+}
+
+/* Results Card Styling */
+#resultsCard.success {
+    border-left: 5px solid #198754;
+}
+
+#resultsCard.warning {
+    border-left: 5px solid #ffc107;
+}
+
+#resultsCard.danger {
+    border-left: 5px solid #dc3545;
+}
+
+#resultsHeader.success {
+    background-color: #198754;
+    color: white;
+}
+
+#resultsHeader.warning {
+    background-color: #ffc107;
+    color: #212529;
+}
+
+#resultsHeader.danger {
+    background-color: #dc3545;
+    color: white;
+}
+
+/* Form styles */
+label {
+    font-weight: 500;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: #0d6efd;
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+}
+
+/* Custom footer */
+footer {
+    margin-top: 2rem;
+}
+
+/* Modal styles */
+.modal-content {
+    border-radius: 10px;
+    border: none;
+}
+
+.modal-header {
+    border-radius: 10px 10px 0 0;
+}
+
+/* Navigation */
+.nav-link {
+    font-weight: 500;
+    transition: opacity 0.3s;
+}
+
+.nav-link:hover {
+    opacity: 0.8;
+}
+
+/* Button hover effect */
+.btn {
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* About page styling */
+main ul li, main ol li {
+    margin-bottom: 0.5rem;
+}

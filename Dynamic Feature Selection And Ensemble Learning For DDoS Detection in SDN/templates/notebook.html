@@ -1,0 +1,309 @@
+<!-- templates/notebook.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Network IDS - Analysis Notebook</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        .result-box {
+            transition: all 0.3s ease;
+            height: 100%;
+        }
+        .result-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        .feature-item {
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+        .result-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+        }
+        .chart-container {
+            position: relative;
+            height: 300px;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+        .model-card {
+            border-radius: 10px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            margin-bottom: 20px;
+        }
+        .model-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+        }
+        .model-header {
+            padding: 15px;
+            font-weight: bold;
+        }
+        .model-body {
+            padding: 20px;
+        }
+        .confidence-pill {
+            border-radius: 20px;
+            padding: 5px 15px;
+            font-weight: bold;
+        }
+        .feature-importance-item {
+            margin-bottom: 15px;
+        }
+        #resultsCard {
+            margin-top: 40px;
+            margin-bottom: 40px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="bg-dark text-white py-3">
+        <div class="container">
+            <div class="d-flex justify-content-between align-items-center">
+                <h1 class="m-0">Network IDS</h1>
+                <nav>
+                    <ul class="nav">
+                        <li class="nav-item"><a href="/" class="nav-link text-white">Home</a></li>
+                        <li class="nav-item"><a href="/notebook" class="nav-link text-white">Notebook</a></li>
+                        <li class="nav-item"><a href="/about" class="nav-link text-white">About</a></li>
+                        <li class="nav-item"><a href="/logout" class="nav-link text-white">Sign Out</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="py-5 container">
+        <h2 class="text-center mb-4">Network Traffic Analysis</h2>
+        
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <div class="card shadow">
+                    <div class="card-header bg-primary text-white">
+                        <h3 class="card-title mb-0">Input Traffic Parameters</h3>
+                    </div>
+                    <div class="card-body">
+                        <form id="predictionForm">
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="service" class="form-label">
+                                        Service 
+                                        <span 
+                                            class="text-primary" 
+                                            data-bs-toggle="tooltip" 
+                                            data-bs-placement="right" 
+                                            title="Available services: http, ftp, smtp, dns, ssh, telnet">
+                                            ⓘ
+                                        </span>
+                                    </label>
+                                    <input type="text" class="form-control" id="service" name="Service" placeholder="Enter service (e.g. http, ftp)" required>
+                                </div>
+                                
+                                <div class="col-md-6 mb-3">
+                                    <label for="flag" class="form-label">
+                                        Flag 
+                                        <span 
+                                            class="text-primary" 
+                                            data-bs-toggle="tooltip" 
+                                            data-bs-placement="right" 
+                                            title="Available flags: SF (normal), S0 (no reply), REJ (rejected), RSTO, RSTR, SH">
+                                            ⓘ
+                                        </span>
+                                    </label>
+                                    <input type="text" class="form-control" id="flag" name="Flag" placeholder="Enter flag (e.g. SF, S0)" required>
+                                </div>
+                                
+                            </div>
+                            
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="srcBytes" class="form-label">Src-Bytes</label>
+                                    <input type="number" class="form-control" id="srcBytes" name="Src_Bytes" min="0" required>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="dstBytes" class="form-label">Dst-Bytes</label>
+                                    <input type="number" class="form-control" id="dstBytes" name="Dst_Bytes" min="0" required>
+                                </div>
+                            </div>
+                            
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="count" class="form-label">Count</label>
+                                    <input type="number" class="form-control" id="count" name="Count" min="0" required>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="serrorRate" class="form-label">Serror-Rate</label>
+                                    <input type="number" class="form-control" id="serrorRate" name="Serror_Rate" min="0" max="1" step="0.01" required>
+                                </div>
+                            </div>
+                            
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="sameSrvRate" class="form-label">Same-Srv-Rate</label>
+                                    <input type="number" class="form-control" id="sameSrvRate" name="Same_Srv_Rate" min="0" max="1" step="0.01" required>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="diffSrvRate" class="form-label">Diff-Srv-Rate</label>
+                                    <input type="number" class="form-control" id="diffSrvRate" name="Diff_Srv_Rate" min="0" max="1" step="0.01" required>
+                                </div>
+                            </div>
+                            
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="dstHostSrvCount" class="form-label">Dst-Host-Srv-Count</label>
+                                    <input type="number" class="form-control" id="dstHostSrvCount" name="Dst_Host_Srv_Count" min="0" required>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="dstHostSameSrvCount" class="form-label">Dst-Host-Same-Srv-Count</label>
+                                    <input type="number" class="form-control" id="dstHostSameSrvCount" name="Dst_Host_Same_Srv_Count" min="0" required>
+                                </div>
+                            </div>
+                            
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="dstHostDiffSrvCount" class="form-label">Dst-Host-Diff-Srv-Count</label>
+                                    <input type="number" class="form-control" id="dstHostDiffSrvCount" name="Dst_Host_Diff_Srv_Count" min="0" required>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="dstHostSerrorRate" class="form-label">Dst-Host-Serror-rate</label>
+                                    <input type="number" class="form-control" id="dstHostSerrorRate" name="Dst_Host_Serror_Rate" min="0" max="1" step="0.01" required>
+                                </div>
+                            </div>
+                            
+                            <div class="d-grid gap-2">
+                                <button type="submit" class="btn btn-primary btn-lg">Predict</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Enhanced Results Section -->
+        <div class="row">
+            <div class="col-lg-12 mx-auto">
+                <div class="card shadow" id="resultsCard">
+                    <div class="card-header bg-primary text-white" id="resultsHeader">
+                        <h3 class="card-title mb-0">Network Traffic Analysis Results</h3>
+                    </div>
+                    <div class="card-body">
+                        
+                        <!-- Combined Result Box -->
+                        <div class="row mb-4">
+                            <div class="col-md-12">
+                                <div class="card result-box" id="combinedResultBox">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-md-4 d-flex align-items-center justify-content-center text-center">
+                                                <div>
+                                                    <i class="bi bi-shield-check result-icon" id="resultIcon"></i>
+                                                    <h3 class="mb-0" id="predictionResult">-</h3>
+                                                    <p id="confidenceResult">Confidence: -</p>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4 d-flex align-items-center justify-content-center">
+                                                <div class="w-100">
+                                                    <div class="chart-container">
+                                                        <canvas id="confidenceChart"></canvas>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4 d-flex align-items-center">
+                                                <div class="alert w-100" id="resultAlert" role="alert">
+                                                    <h5>Analysis Summary</h5>
+                                                    <p id="detailedResult">-</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Charts Row -->
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <div class="card result-box">
+                                    <div class="card-header bg-light">
+                                        <h5 class="mb-0">Model Prediction Distribution</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="chart-container">
+                                            <canvas id="modelComparisonChart"></canvas>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card result-box">
+                                    <div class="card-header bg-light">
+                                        <h5 class="mb-0">Top Feature Importance</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="chart-container">
+                                            <canvas id="featureImportanceChart"></canvas>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Individual Model Results -->
+                        <h4 class="mb-3 mt-4">Individual Model Predictions</h4>
+                        <div class="row" id="modelResults">
+                            <!-- Model cards will be dynamically added here -->
+                        </div>
+                        
+                        <!-- Feature Importance Details -->
+                        <div class="row mt-4">
+                            <div class="col-md-12">
+                                <div class="card result-box">
+                                    <div class="card-header bg-light">
+                                        <h5 class="mb-0">Detailed Feature Analysis</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <ul class="list-unstyled" id="featureDetails">
+                                            <!-- Feature details will be added here -->
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-4">
+        <div class="container text-center">
+            <p>&copy; 2025 Network Intrusion Detection System</p>
+        </div>
+    </footer>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+          var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+          var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl)
+          })
+        });
+      </script>
+      
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
